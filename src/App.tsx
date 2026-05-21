@@ -17,6 +17,7 @@ function App() {
         </div>
         <div>
           <h1>BANE KENNEN AD! ESTÁ MUITO FORTE!</h1>
+          <img src='https://media.discordapp.net/attachments/1385065338558742671/1506854015428857956/image.png?ex=6a0fc6a9&is=6a0e7529&hm=eda271925925ac7d4496ed3313f607bab127733708d973653c1f6f567ef2c155&=&format=webp&quality=lossless&width=924&height=129' alt="Bane" />
           <p>
             Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
           </p>
