@@ -1,8 +1,26 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
+import { signOut } from 'firebase/auth'
 import Login from '../pages/Login'
+import ProtectedRoute from './assets/components/ProtectedRoute'
+import { auth } from './services/firebase'
 
 function Dashboard() {
-  return <h1 style={{ color: 'white', padding: 40 }}>Bem-vindo ao Dashboard</h1>
+  const navigate = useNavigate()
+
+  async function handleLogout() {
+    await signOut(auth)
+    navigate('/')
+  }
+
+  return (
+    <div style={{ color: 'white', padding: 40 }}>
+      <h1>Bem-vindo ao Dashboard</h1>
+
+      <button onClick={handleLogout}>
+        Sair
+      </button>
+    </div>
+  )
 }
 
 function App() {
@@ -10,7 +28,15 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   )

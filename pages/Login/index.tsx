@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from 'firebase/auth'
 import { auth } from '../../src/services/firebase'
 
@@ -35,25 +36,76 @@ function Login() {
 
   const navigate = useNavigate()
 
-  async function handleSubmit() {
-    setError('')
+async function handleSubmit() {
+  setError('')
 
-    try {
-      if (isRegister) {
-        await createUserWithEmailAndPassword(auth, email, password)
-        navigate('/dashboard')
-        return
-      }
+  try {
+    if (isRegister) {
+      const userCredential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        )
 
-      await signInWithEmailAndPassword(auth, email, password)
-      navigate('/dashboard')
-    } catch (err: any) {
-  console.log(err.code)
-  console.log(err.message)
+      await sendEmailVerification(
+        userCredential.user
+      )
 
-  setError('Erro: ' + err.code)
-}
+      setError(
+        'Conta criada! Verifique seu e-mail antes de fazer login.'
+      )
+
+      setIsRegister(false)
+
+      return
+    }
+
+    const userCredential =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      )
+
+    await userCredential.user.reload()
+
+    if (!userCredential.user.emailVerified) {
+      setError(
+        'Você precisa verificar seu e-mail primeiro.'
+      )
+      return
+    }
+
+    navigate('/dashboard')
+  } catch (err: any) {
+    console.log(err.code)
+
+    if (err.code === 'auth/email-already-in-use') {
+      setError('Este e-mail já está cadastrado.')
+      return
+    }
+
+    if (err.code === 'auth/weak-password') {
+      setError(
+        'A senha precisa ter pelo menos 6 caracteres.'
+      )
+      return
+    }
+
+    if (err.code === 'auth/invalid-email') {
+      setError('Digite um e-mail válido.')
+      return
+    }
+
+    if (err.code === 'auth/invalid-credential') {
+      setError('E-mail ou senha incorretos.')
+      return
+    }
+
+    setError('Erro: ' + err.code)
   }
+}
 
   return (
     <Page>
