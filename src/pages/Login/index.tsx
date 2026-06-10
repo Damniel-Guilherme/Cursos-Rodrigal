@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   sendEmailVerification,
 } from 'firebase/auth'
-import { auth } from '../../src/services/firebase'
+import { auth } from '../../services/firebase'
 
 import {
   Page,

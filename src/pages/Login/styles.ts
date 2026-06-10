@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import bg from '../../src/assets/images/login-bg.png.png'
+import bg from '../../assets/images/login-bg.png.png'
 
 export const Page = styled.main`
   width: 100%;
