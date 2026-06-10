@@ -2,6 +2,20 @@ import { signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../../services/firebase'
 
+import {
+  Container,
+  Sidebar,
+  Logo,
+  Menu,
+  Content,
+  Header,
+  Stats,
+  CardGrid,
+  CourseCard,
+  ProgressBox,
+  LogoutButton,
+} from './styles'
+
 function Dashboard() {
   const navigate = useNavigate()
 
@@ -11,51 +25,90 @@ function Dashboard() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#0f1117',
-        color: '#fff',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '20px',
-      }}
-    >
-      <img
-        src="data:image/jpeg;base64,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"
-        alt="Imagem"
-        style={{
-          width: '300px',
-          borderRadius: '20px',
-        }}
-      />
+    <Container>
+      <Sidebar>
+        <Logo>
+          <strong>NEXUS</strong>
+          <span>ACADEMY</span>
+        </Logo>
 
-      <h1
-        style={{
-          fontSize: '3rem',
-          textAlign: 'center',
-        }}
-      >
-        BEM VINDO! HETERO RAIZ 😎
-      </h1>
+        <Menu>
+          <button className="active">🎓 Meus cursos</button>
+          <button>⚔️ Aulas</button>
+          <button>📈 Desempenho</button>
+          <button>🏆 Ranking</button>
+          <button>📅 Campeonatos</button>
+          <button>👤 Perfil</button>
+        </Menu>
 
-      <button
-        onClick={handleLogout}
-        style={{
-          padding: '12px 24px',
-          background: '#ffd000',
-          color: '#000',
-          border: 'none',
-          borderRadius: '10px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-        }}
-      >
-        Sair
-      </button>
-    </div>
+        <LogoutButton onClick={handleLogout}>Sair</LogoutButton>
+      </Sidebar>
+
+      <Content>
+        <Header>
+          <div>
+            <h1>Bem-vindo, Invocador</h1>
+            <p>Continue sua jornada rumo ao Challenger.</p>
+          </div>
+
+          <span>Estudante</span>
+        </Header>
+
+        <Stats>
+          <ProgressBox>
+            <strong>Platina II</strong>
+            <span>Elo atual</span>
+          </ProgressBox>
+
+          <ProgressBox>
+            <strong>74%</strong>
+            <span>Progresso nas aulas</span>
+          </ProgressBox>
+
+          <ProgressBox>
+            <strong>18</strong>
+            <span>Aulas concluídas</span>
+          </ProgressBox>
+
+          <ProgressBox>
+            <strong>#128</strong>
+            <span>Ranking da turma</span>
+          </ProgressBox>
+        </Stats>
+
+        <h2>Meus cursos</h2>
+
+        <CardGrid>
+          <CourseCard>
+            <div className="banner mid">MID LANE</div>
+            <h3>Como subir de elo jogando Mid</h3>
+            <p>Controle de wave, roaming e pressão de mapa.</p>
+            <span>EM ANDAMENTO</span>
+          </CourseCard>
+
+          <CourseCard>
+            <div className="banner jungle">JUNGLE</div>
+            <h3>Macro game para Junglers</h3>
+            <p>Rotas, objetivos, ganks e leitura do mapa.</p>
+            <span>EM ANDAMENTO</span>
+          </CourseCard>
+
+          <CourseCard>
+            <div className="banner adc">ADC</div>
+            <h3>Posicionamento em team fight</h3>
+            <p>Aprenda a causar dano sem morrer.</p>
+            <span>NOVO</span>
+          </CourseCard>
+
+          <CourseCard>
+            <div className="banner rank">RANKING</div>
+            <h3>Desafio Challenger 30 dias</h3>
+            <p>Missões diárias para evoluir sua gameplay.</p>
+            <span>BLOQUEADO</span>
+          </CourseCard>
+        </CardGrid>
+      </Content>
+    </Container>
   )
 }
 
